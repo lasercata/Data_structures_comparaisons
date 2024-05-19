@@ -1,0 +1,6 @@
+Todo :
+    - Write README.md ;
+    - Add a license ;
+
+    - make target for logs ;
+    - make target for graphs (?) ;
