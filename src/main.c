@@ -78,13 +78,13 @@ htbl* fill_htbl(char* filename, int size) {
         }
     }
 
-    printf("htbl T fill[nb=%d size=%d] :\t", nb, size);
+    printf("htbl T fill[nb_films=%d size=%d] :\t", nb, size);
     stop_chrono_and_print_time(nb);
 
-    printf("htbl O fill[nb=%d size=%d] :\t", nb, size);
+    printf("htbl O fill[nb_films=%d size=%d] :\t", nb, size);
     afficher_op_elem();
 
-    printf("htbl M fill[nb=%d size=%d] :\t", nb, size);
+    printf("htbl M fill[nb_films=%d size=%d] :\t", nb, size);
     show_memory();
 
     fclose(fd);
@@ -113,10 +113,10 @@ void search_in_htbl(htbl* t_ptr, arr keys, int nb_search) {
         }
     }
 
-    printf("htbl T search[nb_search=%d size=%d] :\t", nb_search, t_ptr->n);
+    printf("htbl T search[nb_films=%d nb_search=%d size=%d] :\t", keys->len, nb_search, t_ptr->n);
     stop_chrono_and_print_time(nb_search);
 
-    printf("htbl O search[nb_search=%d size=%d] :\t", nb_search, t_ptr->n);
+    printf("htbl O search[nb_films=%d nb_search=%d size=%d] :\t", keys->len, nb_search, t_ptr->n);
     afficher_op_elem();
 
     // printf("htbl M search[nb_search=%d] :\t", nb_search);
@@ -164,13 +164,13 @@ bst_tree fill_bst(char* filename) {
         }
     }
 
-    printf("bst T fill[nb=%d] :\t", nb);
+    printf("bst T fill[nb_films=%d] :\t", nb);
     stop_chrono_and_print_time(nb);
 
-    printf("bst O fill[nb=%d] :\t", nb);
+    printf("bst O fill[nb_films=%d] :\t", nb);
     afficher_op_elem();
 
-    printf("bst M fill[nb=%d] :\t", nb);
+    printf("bst M fill[nb_films=%d] :\t", nb);
     show_memory();
 
     fclose(fd);
@@ -199,10 +199,10 @@ void search_in_bst(bst_tree t, arr keys, int nb_search) {
         }
     }
 
-    printf("bst T search[nb_search=%d] :\t", nb_search);
+    printf("bst T search[nb_films=%d nb_search=%d] :\t", keys->len, nb_search);
     stop_chrono_and_print_time(nb_search);
 
-    printf("bst O search[nb_search=%d] :\t", nb_search);
+    printf("bst O search[nb_films=%d nb_search=%d] :\t", keys->len, nb_search);
     afficher_op_elem();
 
     // printf("bst M search[nb_search=%d] :\t", nb_search);
@@ -254,13 +254,13 @@ avl_tree fill_avl(char* filename) {
         }
     }
 
-    printf("avl T fill[nb=%d] :\t", nb);
+    printf("avl T fill[nb_films=%d] :\t", nb);
     stop_chrono_and_print_time(nb);
 
-    printf("avl O fill[nb=%d] :\t", nb);
+    printf("avl O fill[nb_films=%d] :\t", nb);
     afficher_op_elem();
 
-    printf("avl M fill[nb=%d] :\t", nb);
+    printf("avl M fill[nb_films=%d] :\t", nb);
     show_memory();
 
     fclose(fd);
@@ -289,10 +289,10 @@ void search_in_avl(avl_tree t, arr keys, int nb_search) {
         }
     }
 
-    printf("avl T search[nb_search=%d] :\t", nb_search);
+    printf("avl T search[nb_films=%d nb_search=%d] :\t", keys->len, nb_search);
     stop_chrono_and_print_time(nb_search);
 
-    printf("avl O search[nb_search=%d] :\t", nb_search);
+    printf("avl O search[nb_films=%d nb_search=%d] :\t", keys->len, nb_search);
     afficher_op_elem();
 
     // printf("avl M search[nb_search=%d] :\t", nb_search);
@@ -371,13 +371,13 @@ arr get_keys(char* filename) {
         }
     }
 
-    printf("arr T fill[nb=%d] :\t", keys->len);
+    printf("arr T fill[nb_films=%d] :\t", keys->len);
     stop_chrono_and_print_time(keys->len);
 
-    printf("arr O fill[nb=%d] :\t", keys->len);
+    printf("arr O fill[nb_films=%d] :\t", keys->len);
     afficher_op_elem();
 
-    printf("arr M fill[nb=%d] :\t", keys->len);
+    printf("arr M fill[nb_films=%d] :\t", keys->len);
     show_memory();
 
     fclose(fd);
