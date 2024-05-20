@@ -191,7 +191,10 @@ def plot_subplot_lst(d_lst, lb_lst, title, xlabel, ylabel, xlog=False, ylog=Fals
 
 def plot_base_dict_lst(d_lst, title, xlog=False, ylog=False, save_fn=None):
     # plt.figure(figsize=(29.7 / 2, 21 / 2))
-    plt.figure(figsize=(29.7 / 3, 21 / 3))
+    # plt.figure(figsize=(29.7 / 3, 21 / 3), layout='constrained')
+    plt.figure(figsize=(29.7 / 3, 21 / 3), layout='tight')
+    # plt.figure(figsize=(29.7 / 4, 21 / 4), layout='tight')
+    plt.axis('off')
 
     plt.title(title)
 
@@ -295,7 +298,8 @@ def plot_htbl_in_function_of_size(d, nb_films_lst, title, ylabel, measuring='O',
     plt.legend()
 
 def plot_htbl_size_info(d, nb_films_lst=(10, 1000, 10000, 100000, 1000000), title='htbl size data', save_fn=None):
-    plt.figure()
+    plt.figure(figsize=(10, 6), layout='tight')
+    plt.axis('off')
 
     plt.title(title)
 
@@ -330,8 +334,8 @@ if __name__ == '__main__':
     plot_base_dict_lst((avl, bst), 'avl + bst', save_fn='plots/bst_avl.png')
     plot_base_dict_lst((avl, bst, htbl[10000]), 'avl + bst + htbl[10000]', save_fn='plots/bst_avl_htbl.png')
     # plot_base_dict_lst((avl, bst, htbl[10000]), 'avl + bst + htbl[10000] (log log)', True, True)
-    # plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000]')
-    plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000] (log log)', True, True, save_fn='plots/htbl.png')
+    plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000]', save_fn='plots/htbl.png')
+    plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000] (log log)', True, True, save_fn='plots/htbl_loglog.png')
 
-    plot_htbl_size_info(htbl, save_fn='plots/htbl_size.png')
+    plot_htbl_size_info(htbl, title='', save_fn='plots/htbl_size.png')
 
