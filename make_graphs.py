@@ -189,7 +189,7 @@ def plot_subplot_lst(d_lst, lb_lst, title, xlabel, ylabel, xlog=False, ylog=Fals
     plt.ylabel(ylabel)
     plt.legend()
 
-def plot_base_dict_lst(d_lst, title):
+def plot_base_dict_lst(d_lst, title, xlog=False, ylog=False):
     plt.figure()
 
     plt.title(title)
@@ -197,24 +197,24 @@ def plot_base_dict_lst(d_lst, title):
     #------Time
     #---Fill
     plt.subplot(3, 2, 1)
-    plot_subplot_lst([d['T']['fill'] for d in d_lst], [d['label'] for d in d_lst], 'fill time', 'nb films', 'time (µs)')
+    plot_subplot_lst([d['T']['fill'] for d in d_lst], [d['label'] for d in d_lst], 'fill time', 'nb films', 'time (µs)', xlog=xlog, ylog=ylog)
 
     #---Search
     plt.subplot(3, 2, 2)
-    plot_subplot_lst([d['T']['search'] for d in d_lst], [d['label'] for d in d_lst], 'search time', 'nb films', 'time (µs)')
+    plot_subplot_lst([d['T']['search'] for d in d_lst], [d['label'] for d in d_lst], 'search time', 'nb films', 'time (µs)', xlog=xlog, ylog=ylog)
 
     #------Operations
     #---Fill
     plt.subplot(3, 2, 3)
-    plot_subplot_lst([d['O']['fill'] for d in d_lst], [d['label'] for d in d_lst], 'fill nb operations', 'nb films', 'nb operations')
+    plot_subplot_lst([d['O']['fill'] for d in d_lst], [d['label'] for d in d_lst], 'fill nb operations', 'nb films', 'nb operations', xlog=xlog, ylog=ylog)
 
     #---Search
     plt.subplot(3, 2, 4)
-    plot_subplot_lst([d['O']['search'] for d in d_lst], [d['label'] for d in d_lst], 'search nb operations', 'nb films', 'nb operations')
+    plot_subplot_lst([d['O']['search'] for d in d_lst], [d['label'] for d in d_lst], 'search nb operations', 'nb films', 'nb operations', xlog=xlog, ylog=ylog)
 
     #------Memory
     plt.subplot(3, 2, 5)
-    plot_subplot_lst([d['M']['fill'] for d in d_lst], [d['label'] for d in d_lst], 'fill memory', 'nb films', 'memory allocated (o)')
+    plot_subplot_lst([d['M']['fill'] for d in d_lst], [d['label'] for d in d_lst], 'fill memory', 'nb films', 'memory allocated (o)', xlog=xlog, ylog=ylog)
 
     #------Height
     if True in ['height' in d for d in d_lst]:
@@ -234,6 +234,8 @@ def plot_base_dict_lst(d_lst, title):
 
 #---htbl size
 def plot_htbl_size(d, nb_films):
+    '''Plot nb operations for search in function of the htbl size'''
+
     x = d.keys()
     y = [d[size]['O']['search'][nb_films] for size in x]
 
@@ -250,10 +252,28 @@ def plot_htbl_size(d, nb_films):
     plt.show()
 
 def plot_htbl_size_lst(d, nb_films_lst):
-    x = d.keys()
-    y_lst = [[d[size]['O']['search'][nb_films] for size in x] for nb_films in nb_films_lst]
+    '''Plot nb operations for search in function of the htbl size'''
 
     plt.figure()
+    plot_htbl_in_function_of_size(d, nb_films_lst, 'htbl search time by size', 'nb operations', measuring='O', operation='search')
+    plt.show()
+
+def plot_htbl_memory_size(d, nb_films_lst):
+    '''Plot memory in function of the htbl size'''
+
+    plt.figure()
+    plot_htbl_in_function_of_size(d, nb_films_lst, 'htbl memory by size', 'memory (o)', measuring='M', operation='fill')
+    plt.show()
+
+def plot_htbl_in_function_of_size(d, nb_films_lst, title, ylabel, measuring='O', operation='search'):
+    '''
+    Plot things in function of the htbl size, i.e :
+        size -> d[size][measuring][operation]
+    '''
+
+    x = d.keys()
+    y_lst = [[d[size][measuring][operation][nb_films] for size in x] for nb_films in nb_films_lst]
+
     for y in y_lst:
         plt.plot(x, y, label=f'htbl[nb_films={nb_films_lst[y_lst.index(y)]}]')
         plt.plot(x, y, '+')
@@ -261,11 +281,26 @@ def plot_htbl_size_lst(d, nb_films_lst):
     plt.xscale('log')
     plt.yscale('log')
 
-    plt.title('htbl search time by size')
+    plt.title(title)
     plt.xlabel('size')
-    plt.ylabel('nb operations')
+    plt.ylabel(ylabel)
+
     plt.legend()
 
+def plot_htbl_size_info(d, nb_films_lst=(10, 1000, 10000, 100000, 1000000), title='htbl size data'):
+    plt.figure()
+
+    plt.title(title)
+
+    #---Search in function of the size
+    plt.subplot(1, 2, 1)
+    plot_htbl_in_function_of_size(d, nb_films_lst, 'htbl search time by size', 'nb operations', measuring='O', operation='search')
+
+    #---Memory in function of the size
+    plt.subplot(1, 2, 2)
+    plot_htbl_in_function_of_size(d, nb_films_lst, 'htbl memory by size', 'memory (o)', measuring='M', operation='fill')
+
+    plt.subplots_adjust(top=0.949, bottom=0.08, left=0.054, right=0.986, hspace=0.2, wspace=0.082)
     plt.show()
 
 
@@ -279,19 +314,11 @@ if __name__ == '__main__':
     for k in argv[1:]:
         parse(k)
 
-    # print(structs)
-    # print(json.dumps(htbl, indent=True))
+    plot_base_dict_lst((avl, bst), 'avl + bst')
+    plot_base_dict_lst((avl, bst, htbl[10000]), 'avl + bst + htbl[10000]')
+    # plot_base_dict_lst((avl, bst, htbl[10000]), 'avl + bst + htbl[10000] (log log)', True, True)
+    # plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000]')
+    plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000] (log log)', True, True)
 
-    # plot_base_dict(avl, 'AVL test')
-    # plot_base_dict(bst, 'BST test')
-    # plot_base_dict(htbl[1000], 'htbl 1000 test')
-
-    plot_base_dict_lst([avl, bst], 'avl + bst')
-    plot_base_dict_lst([avl, bst, htbl[1000]], 'avl + bst + htbl[1000]')
-    plot_base_dict_lst([htbl[10], htbl[1000], htbl[100000]], 'htbl[10, 1000, 100000]')
-    plot_base_dict_lst([htbl[1000], htbl[10000], htbl[100000]], 'htbl[1000, 10000, 100000]')
-
-    # plot_htbl_size(htbl, 100000)
-    plot_htbl_size_lst(htbl, nb_films_lst)
-    # plot_htbl_size(htbl, 10)
+    plot_htbl_size_info(htbl)
 
