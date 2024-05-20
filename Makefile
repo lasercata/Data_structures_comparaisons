@@ -106,9 +106,14 @@ $(DATA_DIR)/title.basics.tsv:
 
 $(DATA_DIR)/title_%.tsv: $(DATA_DIR)/title.basics.tsv
 	head -n $* $< | sort -R > $@
+
+.PHONY: parallelized_data
+parallelized_data: $(DATA_DIR)/title.basics.tsv
+	for k in $(DATA_SIZE_LST); do ((head -n $$k $< | sort -R > $(DATA_DIR)/title_"$$k".tsv) && echo $(DATA_DIR)/title_"$$k".tsv made) & done; wait
 # }}}2
 
 # ------ Logs ------{{{2
+# $(LOGS_DIR)/all.log: $(BIN_DIR)/$(TARGET) parallelized_data
 $(LOGS_DIR)/all.log: $(BIN_DIR)/$(TARGET) $(DATA_LST)
 	nb_search=$(SEARCH_NB) ./make_logs.sh
 	cat $(LOGS_DIR)/*.log > $@
