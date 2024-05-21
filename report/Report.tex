@@ -1,0 +1,239 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2024.05.21
+%
+%------------------------------------------------------------------------
+
+%---------Init {{{1
+%------Lang
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%See https://github.com/lasercata/LaTeX_Templates for the file latex_base.sty
+\input{latex_base.sty}
+
+
+%------Circuitikz
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage[european]{circuitikz}            %Electrical circuits drawing
+
+%------Sections
+%---To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+%---To start numbering sections from 0
+% \setcounter{section}{-1}
+
+%---To hide subsubsection from the table of contents (show with max depth of 2)
+% \setcounter{tocdepth}{2}
+
+
+%------File structure
+\usepackage{forest} %For the file structure
+
+
+%------Logo
+% \setlogo %Comment to remove the logo
+%}}}1
+
+%------Title (with default LaTeX style)
+%\title{}
+%\author{}
+%\date{\today}
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    % Title {{{1
+    \thetitle{Structures de données}{comparaisons de structures}
+    %\maketitle
+    
+    \tableofcontents
+    %\listoffigures
+    %\listoftables
+    %\listofalgorithms
+    \newpage
+    % }}}1
+    
+    \begin{indt}{\section{Méthode de développement}}% {{{1
+        \begin{indt}{\subsection{Structure du projet}} %{{{2
+            Voici comment sont organisés les fichiers du projet :
+            \begin{figure}[H]% {{{4
+                \centering
+            
+                \begin{tabular}{cc}
+                    \begin{forest}% {{{5
+                        for tree={
+                            font=\sffamily,
+                            text=black,
+                            % text width=2cm,
+                            % minimum height=0.75cm,
+                            % if level=0
+                            % {fill=ff4500}
+                            % {draw=black},
+                            rounded corners=4pt,
+                            grow'=0,
+                            child anchor=west,
+                            parent anchor=south,
+                            anchor=west,
+                            calign=first,
+                            edge={ff4500, rounded corners=1pt, line width=1pt},
+                            edge path={
+                                \noexpand\path [draw, \forestoption{edge}]
+                                (!u.south west) +(0pt,0) |- (.child anchor)\forestoption{edge label};
+                            },
+                            before typesetting nodes={
+                                if n=1
+                                {insert before={[,phantom]}}
+                                {}
+                            },
+                            fit=band,
+                            s sep=1pt,
+                            before computing xy={l=25pt},
+                        }
+                        [
+                            [\textcolor{00f}{bin}]
+                            [\textcolor{00f}{build}]
+                            [\textcolor{00f}{data}]
+                            [\textcolor{00f}{include}
+                                [avl.h]
+                                [bst.h]
+                                [common.h]
+                                [complexite.h]
+                                [film.h]
+                                [htbl.h]
+                                [init\_random.h]
+                                [liste.h]
+                            ]
+                            [\textcolor{00f}{logs}]
+                            [\textcolor{00f}{plots}]
+                            [\textcolor{00f}{report}]
+                        ]
+                    \end{forest}% }}}5
+                    &
+                    \begin{forest}% {{{5
+                        for tree={
+                            font=\sffamily,
+                            text=black,
+                            % text width=2cm,
+                            % minimum height=0.75cm,
+                            % if level=0
+                            % {fill=ff4500}
+                            % {draw=black},
+                            rounded corners=4pt,
+                            grow'=0,
+                            child anchor=west,
+                            parent anchor=south,
+                            anchor=west,
+                            calign=first,
+                            edge={ff4500, rounded corners=1pt, line width=1pt},
+                            edge path={
+                                \noexpand\path [draw, \forestoption{edge}]
+                                (!u.south west) +(0pt,0) |- (.child anchor)\forestoption{edge label};
+                            },
+                            before typesetting nodes={
+                                if n=1
+                                {insert before={[,phantom]}}
+                                {}
+                            },
+                            fit=band,
+                            s sep=1pt,
+                            before computing xy={l=25pt},
+                        }
+                        [
+                            [\textcolor{00f}{src}
+                                [avl.c]
+                                [bst.c]
+                                [common.c]
+                                [complexite.c]
+                                [film.c]
+                                [htbl.c]
+                                [init\_random.c]
+                                [liste.c]
+                                [main.c]
+                            ]
+                            [make\_graphs.py]
+                            [make\_logs.sh]
+                            [Makefile]
+                            [README.md]
+                        ]
+                    \end{forest}% }}}5
+                \end{tabular}
+            
+                \caption{Arborescence du projet}
+                \label{fig:forest}
+            \end{figure}% }}}4
+
+            Et voici à quoi correspondent les fichiers :
+            
+            \begin{table}[H]% {{{4
+                \centering
+            
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Description
+                    & Fichiers
+                    \\
+                    \hline
+                    \hline
+                    Implémentation des \textbf{tables de hachage}
+                    & \texttt{htbl.h}, \texttt{htbl.c}
+                    \\
+                    \hline
+                    Implémentation des \textbf{listes} (pour \texttt{htbl})
+                    & \texttt{liste.h}, \texttt{liste.c}
+                    \\
+                    \hline
+                    Implémentation des \textbf{ABR}
+                    & \texttt{bst.h}, \texttt{bst.c}
+                    \\
+                    \hline
+                    Implémentation des \textbf{AVL}
+                    & \texttt{avl.h}, \texttt{avl.c}
+                    \\
+                    \hline
+                    \textbf{Test} d'une structure donnée pour un fichier test donné
+                    & \texttt{main.c}
+                    \\
+                    \hline
+                    Génération de \textbf{logs}
+                    & \texttt{make\_logs.sh}
+                    \\
+                    \hline
+                    Génération des \textbf{graphes}
+                    & \texttt{make\_graphs.py}
+                    \\
+                    \hline
+                \end{tabular}
+            
+                \caption{Description des fichiers}
+                \label{tab:file_desc}
+            \end{table}% }}}4
+        \end{indt} %}}}2
+
+        \begin{indt}{\subsection{Intégration}} %{{{3
+            Chaque structure a été implémentée dans le TP correspondant, en utilisant le type \texttt{int}.
+            Il a été nécessaire de faire quelques modifications afin de changer vers le type \texttt{t\_film} : changement dans la définition, et dans les fonctions de recherche (utilisation de \texttt{equals} pour le test d'égalité, de \texttt{le} pour $\le$).
+
+            Pour créer les graphes, il suffit de faire \texttt{make graphs} (ou \texttt{make graphs SEARCH\_NB=[nombre de recherches à faire]}) : cela va compiler les sources en \texttt C ; lancer \texttt{make\_logs.sh} sur le résultat de cette compilation ; puis lancer \texttt{make\_graphs.py} sur les logs, ce qui va enregistrer les graphes dans \texttt{plots}.
+        \end{indt} %}}}3
+    \end{indt}% }}}1
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Résultats}} %{{{1
+        .a
+    \end{indt} %}}}1
+    
+\end{document}
+%--------------------------------------------End
+
+% vim:foldmethod=marker:foldlevel=0
