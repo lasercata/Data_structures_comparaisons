@@ -325,6 +325,22 @@ def plot_htbl_size_info(d, nb_films_lst=(10, 1000, 10000, 100000, 1000000), titl
         plt.close()
 
 
+def minus(d1, d2):
+    return {key: val for key, val in [(k, b - a) for k, b, a in zip(d1.keys(), d1.values(), d2.values())]}
+
+def minus_show(xlog=False, ylog=False, save_fn=None):
+    bst_minus_avl = deepcopy(bst)
+    bst_minus_avl['label'] = 'bst - avl'
+
+    bst_minus_avl['height'] = minus(bst['height'], avl['height'])
+    bst_minus_avl['T']['fill'] = minus(bst['T']['fill'], avl['T']['fill'])
+    bst_minus_avl['T']['search'] = minus(bst['T']['search'], avl['T']['search'])
+    bst_minus_avl['O']['fill'] = minus(bst['O']['fill'], avl['O']['fill'])
+    bst_minus_avl['O']['search'] = minus(bst['O']['search'], avl['O']['search'])
+    bst_minus_avl['M']['fill'] = minus(bst['M']['fill'], avl['M']['fill'])
+
+    plot_base_dict_lst([bst_minus_avl], 'bst - avl', xlog=xlog, ylog=ylog, save_fn=save_fn)
+
 
 ##-Run
 if __name__ == '__main__':
@@ -337,10 +353,12 @@ if __name__ == '__main__':
 
     plot_base_dict_lst((avl, bst), 'avl + bst', save_fn='plots/bst_avl.png')
     plot_base_dict_lst((avl, bst), 'avl + bst (log log)', True, True, save_fn='plots/bst_avl_loglog.png')
+    minus_show(save_fn='plots/bst_minus_avl.png')
     plot_base_dict_lst((avl, bst, htbl[10000]), 'avl + bst + htbl[10000]', save_fn='plots/bst_avl_htbl.png')
     # plot_base_dict_lst((avl, bst, htbl[10000]), 'avl + bst + htbl[10000] (log log)', True, True)
     plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000]', save_fn='plots/htbl.png')
     plot_base_dict_lst((htbl[1000], htbl[10000], htbl[100000]), 'htbl[1000, 10000, 100000] (log log)', True, True, save_fn='plots/htbl_loglog.png')
 
     plot_htbl_size_info(htbl, title='', save_fn='plots/htbl_size.png')
+
 
