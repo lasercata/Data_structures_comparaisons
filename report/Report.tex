@@ -57,8 +57,8 @@
     %\maketitle
     
     \tableofcontents
-    %\listoffigures
-    %\listoftables
+    \listoffigures
+    \listoftables
     %\listofalgorithms
     \newpage
     % }}}1
@@ -214,23 +214,138 @@
                     \hline
                 \end{tabular}
             
-                \caption{Description des fichiers}
+                \caption{Description des fichiers principaux}
                 \label{tab:file_desc}
             \end{table}% }}}4
         \end{indt} %}}}2
 
-        \begin{indt}{\subsection{Intégration}} %{{{3
+        \begin{indt}{\subsection{Intégration}} %{{{2
             Chaque structure a été implémentée dans le TP correspondant, en utilisant le type \texttt{int}.
             Il a été nécessaire de faire quelques modifications afin de changer vers le type \texttt{t\_film} : changement dans la définition, et dans les fonctions de recherche (utilisation de \texttt{equals} pour le test d'égalité, de \texttt{le} pour $\le$).
+        \end{indt} %}}}2
 
+        \begin{indt}{\subsection{Génération des résultats}} %{{{2
             Pour créer les graphes, il suffit de faire \texttt{make graphs} (ou \texttt{make graphs SEARCH\_NB=[nombre de recherches à faire]}) : cela va compiler les sources en \texttt C ; lancer \texttt{make\_logs.sh} sur le résultat de cette compilation ; puis lancer \texttt{make\_graphs.py} sur les logs, ce qui va enregistrer les graphes dans \texttt{plots}.
-        \end{indt} %}}}3
+        \end{indt} %}}}2
     \end{indt}% }}}1
 
     \vspace{12pt}
     
     \begin{indt}{\section{Résultats}} %{{{1
-        .a
+        \begin{indt}{\subsection{Description des tests}} %{{{2
+            Les propriétés suivantes ont été mesurées : \textbf{temps}, \textbf{nombre d'opérations}, et \textbf{mémoire allouée}.
+            Pour les arbres, la hauteur a aussi été mesurée.
+
+            Les opérations suivantes ont été testées : l'\textbf{insertion} et la \textbf{recherche}.
+
+            Chaque opération a été testée une fois par structure et par taille des données d'entrée.
+
+            \vspace{12pt}
+
+            \'Etant donné un fichier de test de taille $n$ :
+            
+            $\bullet$ \textbf{Insertion} : les compteurs sont initialisés à zéro avant la création de la structure vide.
+            Ils sont relevés après l'insertion des $n$ éléments dans la structure.
+
+            $\bullet$ \textbf{Recherche} : on définit un nombre de recherches à faire \texttt{nb\_search}. On initialise les compteurs à zéro.
+            Dans une boucle répétée \texttt{nb\_search} fois, on choisit aléatoirement un film, puis on le recherche dans la structure.
+            On relève les compteurs après la boucle, et on divise leur résultats par \texttt{nb\_search}.
+        \end{indt} %}}}2
+
+        \begin{indt}{\subsection{Comparaison des trois structures}} %{{{2
+            \label{sub:all_comp}
+
+            \begin{figure}[H]
+                \centering
+            
+                \includegraphics[width=1.0\textwidth]{../plots/nb_search_500_000/bst_avl_htbl.png}
+            
+                \caption{Résultats des mesures pour les trois structures, avec \texttt{nb\_search=500 000}.}
+                \label{fig:avl_bst_htbl}
+            \end{figure}
+
+            On remarque que les arbres (AVL et ABR=BST) ont des comportements similaires et se distinguent de la table de hachage (htbl).
+
+            \vspace{12pt}
+            
+            $\bullet$ \textbf{Insertion} (\emph{fill}) : comme on ne regarde pas l'insertion d'un élément dans une structure de taille $n$, mais l'insertion des $n$ éléments dans la structure, c'est linéaire pour toutes les structures.
+
+            On remarque que c'est plus rapide pour les tables de hachage : en effet, il y a moins d'opérations à faire lors de l'ajout d'un élément.
+
+            Au niveau de la mémoire : c'est presque la même chose pour les trois, comme on stocke les mêmes données.
+
+            \vspace{12pt}
+            
+            $\bullet$ \textbf{Recherche} (\emph{search}) : la recherche d'un élément dans une table de hachage semble être en $\mathcal O(n)$ (avec $n$ le nombre d'éléments dans la table), ce qui correspond à la théorie. 
+
+            Pour les arbres, cela semble être en $\mathcal O(\log n)$, ce qui correspond plus ou moins à la théorie (voir en détail dans \ref{sub:tree_comp}).
+        \end{indt} %}}}2
+
+        \begin{indt}{\subsection{Comparaison des structures arborescentes}} %{{{2
+            \label{sub:tree_comp}
+
+            \begin{figure}[H]
+                \centering
+            
+                \includegraphics[width=1.0\textwidth]{../plots/nb_search_500_000/bst_avl.png}
+            
+                \caption{Résultats pour les arbres (AVL et ABR), avec \texttt{nb\_search=500 000}}
+                \label{fig:avl_bst}
+            \end{figure}
+
+            $\bullet$ \textbf{Insertion} : \textit{cf} \ref{sub:all_comp}.
+
+            $\bullet$ \textbf{Recherche} : la recherche est plus rapide sur les avl, ce qui corrobore donc bien la théorie.
+
+            On remarque aussi que la hauteur des ABR est en $\mathcal O(\log n)$ (avec $n$ le nombre d'éléments dans l'arbre) avec ces données.
+
+            Mais la hauteur des ABR est de l'ordre de deux fois plus que celle des AVL, pour un même nombre de données.
+            Cela se traduit bien par une recherche plus rapide pour les AVL.
+
+            \vspace{12pt}
+            
+            On peut regarder plus en détail, en faisant la différence entre les bst et les avl :
+            \begin{figure}[H]
+                \centering
+            
+                \includegraphics[width=1.0\textwidth]{../plots/nb_search_500_000/bst_minus_avl.png}
+            
+                \caption{Différence entre ABR et AVL (\texttt{nb\_search=500 000})}
+                \label{fig:bst_minus_avl}
+            \end{figure}
+
+            On remarque que la différence entre les hauteurs est même en $\mathcal O(\log n)$.
+        \end{indt} %}}}2
+
+        \begin{indt}{\subsection{Comparaison des tables de hachage}} %{{{2
+            \begin{figure}[H]
+                \centering
+            
+                \includegraphics[width=1.0\textwidth]{../plots/nb_search_500_000/htbl.png}
+            
+                \caption{Résultats pour les tables de hachage avec différentes tailles (\texttt{nb\_search=500 000})}
+                \label{fig:htbl}
+            \end{figure}
+
+            Tout est linéaire en le nombre de données dans la structure, mais il semblerait qu'une taille plus grande donne de meilleurs résultats.
+            En effet, on aura moins de collisions, mais la table prendra plus de place.
+
+            On peut tracer les courbes en fonction de la taille de la table au lieu du nombre de données :
+
+            \begin{figure}[H]
+                \centering
+            
+                \includegraphics[width=1.0\textwidth]{../plots/nb_search_500_000/htbl_size.png}
+            
+                \caption{Nombre d'opérations et mémoire des tables de hachage en fonction de la taille (échelle logarithmique)}
+                \label{fig:htbl_size}
+            \end{figure}
+
+            Si on a peu de données (courbe \texttt{htbl[nb\_films=10]} par exemple), alors augmenter la taille ne rend pas pas la recherche plus rapide, mais prend de la place pour rien.
+
+            Si on a beaucoup de données, (courbe \texttt{htbl[nb\_films=100000]} par exemple), alors augmenter la taille de la table de hachage permet de réduire les collisions et ainsi d'augmenter la vitesse de recherche.
+            On remarque que dans ce cas, la taille n'influe pas sur la mémoire allouée (car il n'y a jamais de collisions).
+        \end{indt} %}}}2
     \end{indt} %}}}1
     
 \end{document}
